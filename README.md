@@ -1,2 +1,1 @@
-# CS5350
-Lightweight machine learning library for CS5350 at the University of Utah
+This is a machine learning library developed by Tyler Jones for CS5350 at the University of Utah
