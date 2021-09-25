@@ -1,0 +1,1 @@
+python3 ./assignment1.pygit 
