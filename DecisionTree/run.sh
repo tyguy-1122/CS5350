@@ -1,1 +1,1 @@
-python3 ./assignment1.pygit 
+python3 ./assignment1.py
