@@ -90,7 +90,8 @@ if __name__ == '__main__':
     'poutcome': ['unknown','other','failure','success']
     }
 
-    classifier = AdaBoost(bank_data_training, possible_attribute_values_bank,
+    classifier = AdaBoost(bank_data_training, possible_attribute_values_bank_with_unknown,
      ['weights', 'age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 'loan', 'contact',
-        'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome', 'label'], 2)
-
+        'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome', 'label'], 10)
+    
+    print('nada')
