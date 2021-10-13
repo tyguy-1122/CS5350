@@ -7,39 +7,52 @@ from statistics import median
 # Static Methods
 ##################################
 
-def get_label_counts(data):
+def get_label_counts(data, weighted_data):
     '''
     Creates a dictionary with labels as keys and the frequency of the labels as values
     '''
     label_counts = {}
     for row in data:
         label = row[-1]
-        if label in label_counts.keys():
-            label_counts[label] += 1
+        if weighted_data:
+            if label in label_counts.keys():
+                label_counts[label] += row[0]
+            else:
+                label_counts[label] = row[0]
         else:
-            label_counts[label] = 1
+            if label in label_counts.keys():
+                label_counts[label] += 1
+            else:
+                label_counts[label] = 1
     return label_counts
 
-def calc_entropy(data):
+def calc_entropy(data, weighted_data):
     '''
     Calculates the entropy of a data set using the following equation:
     Entropy = -Σ(label_occurances/num_rows) * log2(label_occurances/num_rows)
     '''
-    label_counts = get_label_counts(data)
+    label_counts = get_label_counts(data, weighted_data)
 
-    num_labels = len(data)
+    num_labels = 0
+    if weighted_data:
+        for i in range(len(data)):
+            num_labels += data[i][0]
+    else:
+        num_labels = len(data)
     entropy = 0
     for key, value in label_counts.items():
         entropy -= (value/num_labels) * math.log2(value/num_labels)
     
     return entropy
 
-def calc_majority_error(data):
+def calc_majority_error(data, weighted_data):
     '''
     Calculate the majority error of a data set using the following equation:
     Majority Error = (num_non_majority_labels) / (total_rows)
     '''
-    label_counts = get_label_counts(data)
+    if weighted_data:
+        raise ValueError('Majority Error not yet compatible with weighted data')
+    label_counts = get_label_counts(data, weighted_data)
     
     num_labels = len(data)
     labels = [row[-1] for row in data]
@@ -49,12 +62,14 @@ def calc_majority_error(data):
 
     return majority_error
 
-def calc_gini_index(data):
+def calc_gini_index(data, weighted_data):
     '''
     Calculate the gini index of a data set using the following equation:
     Gini Index = 1 - Σ(label_occurances/num_rows)^2
     '''
-    label_counts = get_label_counts(data)
+    if weighted_data:
+        raise ValueError('Gini Index not yet compatible with weighted data')
+    label_counts = get_label_counts(data, weighted_data)
     
     num_labels = len(data)
     gini = 1
@@ -63,7 +78,7 @@ def calc_gini_index(data):
     
     return gini
 
-def calc_information_gain(data, remaining_attributes, method):
+def calc_information_gain(data, remaining_attributes, method, weighted_data):
     '''
     Calculates the information gain for each attribute in the dataset using the following equations:
 
@@ -84,25 +99,49 @@ def calc_information_gain(data, remaining_attributes, method):
         gain = 0
         # Use the specified variant
         if method == 'ENT':
-            current_entropy = calc_entropy(data)
+            current_entropy = calc_entropy(data, weighted_data)
             # Calculate entropy for each attribute value and subract from current entropy
             entropy_gain = current_entropy
-            for key, value in data_per_attribute_value.items():                
-                entropy_gain -= (len(value)/len(data)) * calc_entropy(value)
+            for key, value in data_per_attribute_value.items():
+                numerator = 0
+                denominator = len(data)
+                if weighted_data:
+                    for j in range(len(value)):
+                        numerator += value[j][0]
+                    denominator = 1
+                else:
+                    numerator = len(value)
+                entropy_gain -= (numerator/denominator) * calc_entropy(value, weighted_data)
             gain = entropy_gain
         elif method == 'ME':
-            current_me = calc_majority_error(data)
+            current_me = calc_majority_error(data, weighted_data)
             # Calculate majority error for each attribute value and subract from current entropy
             me_gain = current_me
-            for key, value in data_per_attribute_value.items():                
-                me_gain -= (len(value)/len(data)) * calc_majority_error(value)
+            for key, value in data_per_attribute_value.items():
+                numerator = 0
+                denominator = len(data)
+                if weighted_data:
+                    for j in range(len(value)):
+                        numerator += value[j][0]
+                    denominator = 1
+                else:
+                    numerator = len(value)       
+                me_gain -= (numerator/denominator) * calc_majority_error(value, weighted_data)
             gain = me_gain
         elif method =='GINI':
-            current_gini = calc_gini_index(data)
+            current_gini = calc_gini_index(data, weighted_data)
             # Calculate gini index for each attribute value and subract from current entropy
             gini_gain = current_gini
-            for key, value in data_per_attribute_value.items():                
-                gini_gain -= (len(value)/len(data)) * calc_gini_index(value)
+            for key, value in data_per_attribute_value.items():
+                numerator = 0
+                denominator = len(data)
+                if weighted_data:
+                    for j in range(len(value)):
+                        numerator += value[j][0]
+                    denominator = 1
+                else:
+                    numerator = len(value)                
+                gini_gain -= (numerator/denominator) * calc_gini_index(value, weighted_data)
             gain = gini_gain
         else:
             raise TypeError('Invalid method type. Valid types are "ENT" (Entropy), "ME" (Majority Error), and "GINI" (GINI index)')
@@ -131,12 +170,15 @@ class DecisionTree:
     Represents a decision tree structure used for classification. The tree is trained using the ID3 
     decision tree learning algorithm.
     '''
-    def __init__(self, data, possible_attribute_values, column_headers, max_depth=-1, method='ENT', unknown_vals=False, numerical_vals=False):
+    def __init__(self, data, possible_attribute_values, column_headers, max_depth=-1, method='ENT', unknown_vals=False, numerical_vals=False, weighted_data=False):
         self.column_headers = column_headers
         self.max_depth = max_depth
         self.possible_attribute_values = possible_attribute_values
+        self.weighted_data = weighted_data
         remaining_attributes = []
-        for i in range(len(possible_attribute_values)): remaining_attributes.append(i)
+        for i in range(len(possible_attribute_values)):
+            if self.weighted_data and i == 0: continue
+            remaining_attributes.append(i)
 
         # Preprocess the data if necessary
         if numerical_vals:
@@ -149,8 +191,9 @@ class DecisionTree:
     
     def convert_numerical_to_binary(self, data):
         for i in range(len(data[0]) - 1):
+            if self.weighted_data and i == 0: continue
             # Determine if a column is numerical
-            if ['-', '+'] == self.possible_attribute_values[self.column_headers[i]]: # Column is numerical
+            if ['-', '+'] == self.possible_attribute_values[self.column_headers[i]] and data[0][i] not in ['-', '+']: # Column is numerical and not adjusted
                 # Find the median value
                 median_val = median([int(row[i]) for row in data])
                 # Replace all numbers with either + or -
@@ -160,7 +203,7 @@ class DecisionTree:
                     else:
                         row[i] = '-'
         return data
-    
+
     def handle_missing_attributes(self, data):
         # Find the most common attribute value for each row
         most_common_attributes = []
@@ -216,7 +259,7 @@ class DecisionTree:
         
         else: 
             # Find the attribute that best splits the data
-            IG_dict = calc_information_gain(data_subset, remaining_attributes, method)
+            IG_dict = calc_information_gain(data_subset, remaining_attributes, method, self.weighted_data)
             next_node_index = max(IG_dict, key=IG_dict.get)
             current_node = DecisionTreeNode(False, self.column_headers[next_node_index])
 

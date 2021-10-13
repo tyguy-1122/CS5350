@@ -403,7 +403,6 @@ if __name__ == '__main__':
         GINI_errors.append((training_error, testing_error))
 
 
-
     ######################################################
     # Print out a table of errors
     ######################################################
