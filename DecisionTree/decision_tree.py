@@ -2,7 +2,6 @@ import math
 from statistics import mode
 from statistics import median
 
-
 ##################################
 # Static Methods
 ##################################
@@ -106,9 +105,11 @@ def calc_information_gain(data, remaining_attributes, method, weighted_data):
                 numerator = 0
                 denominator = len(data)
                 if weighted_data:
+                    denominator = 0
                     for j in range(len(value)):
                         numerator += value[j][0]
-                    denominator = 1
+                    for j in range(len(data)):
+                        denominator += data[j][0]
                 else:
                     numerator = len(value)
                 entropy_gain -= (numerator/denominator) * calc_entropy(value, weighted_data)
@@ -121,9 +122,11 @@ def calc_information_gain(data, remaining_attributes, method, weighted_data):
                 numerator = 0
                 denominator = len(data)
                 if weighted_data:
+                    denominator = 0
                     for j in range(len(value)):
                         numerator += value[j][0]
-                    denominator = 1
+                    for j in range(len(data)):
+                        denominator += data[j][0]
                 else:
                     numerator = len(value)       
                 me_gain -= (numerator/denominator) * calc_majority_error(value, weighted_data)
@@ -136,9 +139,11 @@ def calc_information_gain(data, remaining_attributes, method, weighted_data):
                 numerator = 0
                 denominator = len(data)
                 if weighted_data:
+                    denominator = 0
                     for j in range(len(value)):
                         numerator += value[j][0]
-                    denominator = 1
+                    for j in range(len(data)):
+                        denominator += data[j][0]
                 else:
                     numerator = len(value)                
                 gini_gain -= (numerator/denominator) * calc_gini_index(value, weighted_data)
@@ -170,15 +175,20 @@ class DecisionTree:
     Represents a decision tree structure used for classification. The tree is trained using the ID3 
     decision tree learning algorithm.
     '''
-    def __init__(self, data, possible_attribute_values, column_headers, max_depth=-1, method='ENT', unknown_vals=False, numerical_vals=False, weighted_data=False):
+    def __init__(self, data, possible_attribute_values, column_headers, max_depth=-1, method='ENT',
+     unknown_vals=False, numerical_vals=False, weighted_data=False, random_attributes=None):
         self.column_headers = column_headers
         self.max_depth = max_depth
         self.possible_attribute_values = possible_attribute_values
         self.weighted_data = weighted_data
+
         remaining_attributes = []
-        for i in range(len(possible_attribute_values)):
-            if self.weighted_data and i == 0: continue
-            remaining_attributes.append(i)
+        if random_attributes != None:
+            remaining_attributes = random_attributes
+        elif weighted_data:
+            remaining_attributes = [i for i in range(1, len(possible_attribute_values) + 1)]
+        else:
+            remaining_attributes = [i for i in range(len(possible_attribute_values))]
 
         # Preprocess the data if necessary
         if numerical_vals:
@@ -219,7 +229,7 @@ class DecisionTree:
     def classify_data(self, row):
         if len(self.column_headers) != len(row):
             raise ValueError('Row does not match the data set this tree was trained on!')
-        
+  
         curr_node = self.root
         while not curr_node.is_leaf: # Traverse the tree until we reach a leaf node
             column_index = self.column_headers.index(curr_node.content)
@@ -236,8 +246,17 @@ class DecisionTree:
         '''   
 
         # Find the most common label in the data
-        labels = [row[-1] for row in data_subset]
-        most_common_label = mode(labels)
+        most_common_label = ''
+        if not self.weighted_data:
+            labels = [row[-1] for row in data_subset]
+            most_common_label = mode(labels)
+        else:
+            most_common_label_dict = {}
+            for row in data_subset:
+                if row[-1] not in most_common_label_dict:
+                    most_common_label_dict[row[-1]] = 0
+                most_common_label_dict[row[-1]] += row[0]
+            most_common_label = max(most_common_label_dict, key=most_common_label_dict.get)
 
         # Base Case: All rows have the same label
         first_label = data_subset[0][-1]

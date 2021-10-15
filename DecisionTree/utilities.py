@@ -23,3 +23,5 @@ def calc_classification_error(predicted_labels, correct_labels):
         if predicted_labels[i] != correct_labels[i]: count_incorrect += 1
     
     return (count_incorrect / len(predicted_labels)) * 100
+
+

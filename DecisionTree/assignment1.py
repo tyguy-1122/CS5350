@@ -3,116 +3,116 @@ from utilities import extract_data_from_csv
 from utilities import calc_classification_error
 
 if __name__ == '__main__':
-    training_data = extract_data_from_csv('./car_dataset/train.csv')
-    testing_data = extract_data_from_csv('./car_dataset/test.csv')
-    possible_attribute_values = {
-        'buying':   ['vhigh', 'high', 'med', 'low'],
-        'maint':    ['vhigh', 'high', 'med', 'low'],
-        'doors':    ['2', '3', '4', '5more'],
-        'persons':  ['2', '4', 'more'],
-        'lug_boot': ['small', 'med', 'big'],
-        'safety':   ['low', 'med', 'high']
-    }
-    ######################################################
-    ######################################################
-    # Question 2
-    ######################################################
-    ######################################################
+    # training_data = extract_data_from_csv('./car_dataset/train.csv')
+    # testing_data = extract_data_from_csv('./car_dataset/test.csv')
+    # possible_attribute_values = {
+    #     'buying':   ['vhigh', 'high', 'med', 'low'],
+    #     'maint':    ['vhigh', 'high', 'med', 'low'],
+    #     'doors':    ['2', '3', '4', '5more'],
+    #     'persons':  ['2', '4', 'more'],
+    #     'lug_boot': ['small', 'med', 'big'],
+    #     'safety':   ['low', 'med', 'high']
+    # }
+    # ######################################################
+    # ######################################################
+    # # Question 2
+    # ######################################################
+    # ######################################################
 
-    print('\n\n')
-    ######################################################
-    # Decision Tree Using Entropy
-    ######################################################
+    # print('\n\n')
+    # ######################################################
+    # # Decision Tree Using Entropy
+    # ######################################################
 
-    ENT_errors = []
-    for i in range(6):
-        DT = decision_tree.DecisionTree(training_data, possible_attribute_values, ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'label'], max_depth=i+1)
+    # ENT_errors = []
+    # for i in range(6):
+    #     DT = decision_tree.DecisionTree(training_data, possible_attribute_values, ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'label'], max_depth=i+1)
 
-        # Get error for training data
-        train_predictions = []
-        for row in training_data:
-            train_predictions.append(DT.classify_data(row))
-        correct_values = [row[6] for row in training_data]
+    #     # Get error for training data
+    #     train_predictions = []
+    #     for row in training_data:
+    #         train_predictions.append(DT.classify_data(row))
+    #     correct_values = [row[6] for row in training_data]
 
-        training_error = calc_classification_error(train_predictions, correct_values)
+    #     training_error = calc_classification_error(train_predictions, correct_values)
 
-        # Get error for test data
-        test_predictions = []
-        for row in testing_data:
-            test_predictions.append(DT.classify_data(row))
-        correct_values = [row[6] for row in testing_data]
+    #     # Get error for test data
+    #     test_predictions = []
+    #     for row in testing_data:
+    #         test_predictions.append(DT.classify_data(row))
+    #     correct_values = [row[6] for row in testing_data]
 
-        testing_error = calc_classification_error(test_predictions, correct_values)
-        ENT_errors.append((training_error, testing_error))
+    #     testing_error = calc_classification_error(test_predictions, correct_values)
+    #     ENT_errors.append((training_error, testing_error))
 
-    ######################################################
-    # Decision Tree Using Majority Error
-    ######################################################
-    ME_errors = []
-    for i in range(6):
-        DT = decision_tree.DecisionTree(training_data, possible_attribute_values, ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'label'], method='ME', max_depth=i+1)
+    # ######################################################
+    # # Decision Tree Using Majority Error
+    # ######################################################
+    # ME_errors = []
+    # for i in range(6):
+    #     DT = decision_tree.DecisionTree(training_data, possible_attribute_values, ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'label'], method='ME', max_depth=i+1)
 
-        # Get error for training data
-        train_predictions = []
-        for row in training_data:
-            train_predictions.append(DT.classify_data(row))
-        correct_values = [row[6] for row in training_data]
+    #     # Get error for training data
+    #     train_predictions = []
+    #     for row in training_data:
+    #         train_predictions.append(DT.classify_data(row))
+    #     correct_values = [row[6] for row in training_data]
 
-        training_error = calc_classification_error(train_predictions, correct_values)
+    #     training_error = calc_classification_error(train_predictions, correct_values)
 
-        # Get error for test data
-        test_predictions = []
-        for row in testing_data:
-            test_predictions.append(DT.classify_data(row))
-        correct_values = [row[6] for row in testing_data]
+    #     # Get error for test data
+    #     test_predictions = []
+    #     for row in testing_data:
+    #         test_predictions.append(DT.classify_data(row))
+    #     correct_values = [row[6] for row in testing_data]
 
-        testing_error = calc_classification_error(test_predictions, correct_values)
-        ME_errors.append((training_error, testing_error))
+    #     testing_error = calc_classification_error(test_predictions, correct_values)
+    #     ME_errors.append((training_error, testing_error))
 
-    ######################################################
-    # Decision Tree Using Gini Index
-    ######################################################
+    # ######################################################
+    # # Decision Tree Using Gini Index
+    # ######################################################
 
-    GINI_errors = []
-    for i in range(6):
-        DT = decision_tree.DecisionTree(training_data, possible_attribute_values, ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'label'], method='GINI', max_depth=i+1)
+    # GINI_errors = []
+    # for i in range(6):
+    #     DT = decision_tree.DecisionTree(training_data, possible_attribute_values, ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'label'], method='GINI', max_depth=i+1)
 
-        # Get error for training data
-        train_predictions = []
-        for row in training_data:
-            train_predictions.append(DT.classify_data(row))
-        correct_values = [row[6] for row in training_data]
+    #     # Get error for training data
+    #     train_predictions = []
+    #     for row in training_data:
+    #         train_predictions.append(DT.classify_data(row))
+    #     correct_values = [row[6] for row in training_data]
 
-        training_error = calc_classification_error(train_predictions, correct_values)
+    #     training_error = calc_classification_error(train_predictions, correct_values)
 
-        # Get error for test data
-        test_predictions = []
-        for row in testing_data:
-            test_predictions.append(DT.classify_data(row))
-        correct_values = [row[6] for row in testing_data]
+    #     # Get error for test data
+    #     test_predictions = []
+    #     for row in testing_data:
+    #         test_predictions.append(DT.classify_data(row))
+    #     correct_values = [row[6] for row in testing_data]
 
-        testing_error = calc_classification_error(test_predictions, correct_values)
-        GINI_errors.append((training_error, testing_error))
+    #     testing_error = calc_classification_error(test_predictions, correct_values)
+    #     GINI_errors.append((training_error, testing_error))
 
     
 
-    ######################################################
-    # Print out a table of errors
-    ######################################################
-    print('--- Question 2 - Basic ID3 Algorithm Implementation ---')
-    print('Algorithm\t', 'type\t\t', '1\t', '2\t', '3\t', '4\t', '5\t', '6\t')
-    print('\n')
-    print('Entropy\t\t', 'training\t', round(ENT_errors[0][0], 2), '\t', round(ENT_errors[1][0], 2), '\t', round(ENT_errors[2][0], 2), '\t', round(ENT_errors[3][0], 2), '\t', round(ENT_errors[4][0], 2), '\t', round(ENT_errors[5][0], 2))
-    print('\n')
-    print('Entropy\t\t', 'testing\t', round(ENT_errors[0][1], 2), '\t', round(ENT_errors[1][1], 2), '\t', round(ENT_errors[2][1], 2), '\t', round(ENT_errors[3][1], 2), '\t', round(ENT_errors[4][1], 2), '\t', round(ENT_errors[5][1], 2))
-    print('\n')
-    print('Majority Error\t', 'training\t', round(ME_errors[0][0], 2), '\t', round(ME_errors[1][0], 2), '\t', round(ME_errors[2][0], 2), '\t', round(ME_errors[3][0], 2), '\t', round(ME_errors[4][0], 2), '\t', round(ME_errors[5][0], 2))
-    print('\n')
-    print('Majority Error\t', 'testing\t', round(ME_errors[0][1], 2), '\t', round(ME_errors[1][1], 2), '\t', round(ME_errors[2][1], 2), '\t', round(ME_errors[3][1], 2), '\t', round(ME_errors[4][1], 2), '\t', round(ME_errors[5][1], 2))
-    print('\n')
-    print('Gini Index\t', 'training\t', round(GINI_errors[0][0], 2), '\t', round(GINI_errors[1][0], 2), '\t', round(GINI_errors[2][0], 2), '\t', round(GINI_errors[3][0], 2), '\t', round(GINI_errors[4][0], 2), '\t', round(GINI_errors[5][0], 2))
-    print('\n')
-    print('Gini Index\t', 'testing\t', round(GINI_errors[0][1], 2), '\t', round(GINI_errors[1][1], 2), '\t', round(GINI_errors[2][1], 2), '\t', round(GINI_errors[3][1], 2), '\t', round(GINI_errors[4][1], 2), '\t', round(GINI_errors[5][1], 2))
+    # ######################################################
+    # # Print out a table of errors
+    # ######################################################
+    # print('--- Question 2 - Basic ID3 Algorithm Implementation ---')
+    # print('Algorithm\t', 'type\t\t', '1\t', '2\t', '3\t', '4\t', '5\t', '6\t')
+    # print('\n')
+    # print('Entropy\t\t', 'training\t', round(ENT_errors[0][0], 2), '\t', round(ENT_errors[1][0], 2), '\t', round(ENT_errors[2][0], 2), '\t', round(ENT_errors[3][0], 2), '\t', round(ENT_errors[4][0], 2), '\t', round(ENT_errors[5][0], 2))
+    # print('\n')
+    # print('Entropy\t\t', 'testing\t', round(ENT_errors[0][1], 2), '\t', round(ENT_errors[1][1], 2), '\t', round(ENT_errors[2][1], 2), '\t', round(ENT_errors[3][1], 2), '\t', round(ENT_errors[4][1], 2), '\t', round(ENT_errors[5][1], 2))
+    # print('\n')
+    # print('Majority Error\t', 'training\t', round(ME_errors[0][0], 2), '\t', round(ME_errors[1][0], 2), '\t', round(ME_errors[2][0], 2), '\t', round(ME_errors[3][0], 2), '\t', round(ME_errors[4][0], 2), '\t', round(ME_errors[5][0], 2))
+    # print('\n')
+    # print('Majority Error\t', 'testing\t', round(ME_errors[0][1], 2), '\t', round(ME_errors[1][1], 2), '\t', round(ME_errors[2][1], 2), '\t', round(ME_errors[3][1], 2), '\t', round(ME_errors[4][1], 2), '\t', round(ME_errors[5][1], 2))
+    # print('\n')
+    # print('Gini Index\t', 'training\t', round(GINI_errors[0][0], 2), '\t', round(GINI_errors[1][0], 2), '\t', round(GINI_errors[2][0], 2), '\t', round(GINI_errors[3][0], 2), '\t', round(GINI_errors[4][0], 2), '\t', round(GINI_errors[5][0], 2))
+    # print('\n')
+    # print('Gini Index\t', 'testing\t', round(GINI_errors[0][1], 2), '\t', round(GINI_errors[1][1], 2), '\t', round(GINI_errors[2][1], 2), '\t', round(GINI_errors[3][1], 2), '\t', round(GINI_errors[4][1], 2), '\t', round(GINI_errors[5][1], 2))
 
 
 
@@ -184,8 +184,10 @@ if __name__ == '__main__':
 
     ENT_errors = []
     for i in range(16):
-        bank_data_training = extract_data_from_csv('./bank/train.csv')
-        bank_data_testing = extract_data_from_csv('./bank/test.csv')
+        bank_data_training = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/DecisionTree/bank/train.csv')
+        bank_data_testing = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/DecisionTree/bank/test.csv')
+        # bank_data_training = extract_data_from_csv('./bank/train.csv')
+        # bank_data_testing = extract_data_from_csv('./bank/test.csv')
         DT = decision_tree.DecisionTree(bank_data_training, possible_attribute_values_bank_with_unknown,
         ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 'loan', 'contact',
         'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome', 'label'], numerical_vals=True, max_depth=i+1)
