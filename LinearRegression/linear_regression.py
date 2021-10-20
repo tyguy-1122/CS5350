@@ -66,7 +66,7 @@ class LinearRegression:
             W = next_W
 
             self.cost_function_values.append(compute_cost_function(W, data))
-            R *= .995
+            R *= .9999
         self.classifier = W
     
     def create_classifier_stochastic(self, data):
@@ -107,7 +107,7 @@ class LinearRegression:
             W = next_W
 
             self.cost_function_values.append(compute_cost_function(W, data))
-            R *= .999
+            R *= .9999
         self.classifier = W
 
     def classify_data(self, row):

@@ -184,10 +184,8 @@ if __name__ == '__main__':
 
     ENT_errors = []
     for i in range(16):
-        bank_data_training = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/DecisionTree/bank/train.csv')
-        bank_data_testing = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/DecisionTree/bank/test.csv')
-        # bank_data_training = extract_data_from_csv('./bank/train.csv')
-        # bank_data_testing = extract_data_from_csv('./bank/test.csv')
+        bank_data_training = extract_data_from_csv('./bank/train.csv')
+        bank_data_testing = extract_data_from_csv('./bank/test.csv')
         DT = decision_tree.DecisionTree(bank_data_training, possible_attribute_values_bank_with_unknown,
         ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 'loan', 'contact',
         'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome', 'label'], numerical_vals=True, max_depth=i+1)

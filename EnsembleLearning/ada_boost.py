@@ -1,6 +1,4 @@
 from math import log, exp
-
-from matplotlib import widgets
 from DecisionTree.decision_tree import DecisionTree
 
 def calc_weighted_classification_error(predicted_labels, correct_labels, weights):
