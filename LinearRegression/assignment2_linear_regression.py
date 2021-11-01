@@ -14,8 +14,8 @@ import numpy as np
 ############################################
 
 # Read data from .csv for each iteration
-slump_data_training_str = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/LinearRegression/slump/train.csv')
-slump_data_testing_str = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/LinearRegression/slump/test.csv')
+slump_data_training_str = extract_data_from_csv('./slump/train.csv')
+slump_data_testing_str = extract_data_from_csv('./slump/test.csv')
 
 slump_data_training = []
 for row in slump_data_training_str:
@@ -55,8 +55,8 @@ print(f'Final classifier: {classifier.classifier}')
 #############################################
 
 # Read data from .csv for each iteration
-slump_data_training_str = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/LinearRegression/slump/train.csv')
-slump_data_testing_str = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/LinearRegression/slump/test.csv')
+slump_data_training_str = extract_data_from_csv('./slump/train.csv')
+slump_data_testing_str = extract_data_from_csv('./slump/test.csv')
 
 slump_data_training = []
 for row in slump_data_training_str:
@@ -96,7 +96,7 @@ print(f'Final classifier: {classifier.classifier}')
 # Analytical Solution to weight vector
 #######################################
 
-slump_data_training_str = extract_data_from_csv('/Users/tylerjones/Documents/CS5350/CS5350/LinearRegression/slump/train.csv')
+slump_data_training_str = extract_data_from_csv('./slump/train.csv')
 slump_data_training = []
 for row in slump_data_training_str:
     float_row = []
