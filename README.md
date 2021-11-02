@@ -1,5 +1,7 @@
 This is a machine learning library developed by Tyler Jones for CS5350 at the University of Utah
 
+## Each top-level assignment folder contains a run.sh script. Use `bash run.sh` within that directory to execute the assignment .py file within that directory. This works on the CADE machines.
+
 How to use DecisionTree:
 ----------------------------------
 1. Create a DecisionTree object
