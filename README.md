@@ -63,3 +63,15 @@ Parameters:
 - It has a classify_data function which can be used after the training has completed.
     - Parameters:
         - row: the row of data in the same order as the training set
+
+How to use Perceptron:
+----------------------------------
+- The class Perceptron creates a classifier using perceptron. It supports functionality for the standard, voted, and average versions
+- The __init__ function will automatically trigger the training of the model
+Parameters:
+    - data: the training data
+    - T: the number of epochs
+    - type: either 'STANDARD', 'VOTED', OR 'AVERAGE'
+- It has a classify_data function which can be used after the training has completed.
+    - Parameters:
+        - row: the row of data in the same order as the training set
