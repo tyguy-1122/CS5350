@@ -24,28 +24,27 @@ class NeuralNet():
         # Layer 1
         self.layer_1_nodes = [0 for i in range(self.hidden_neurons + 1)]
         self.layer_1_nodes[0] = 1
-        for i in range(1, self.hidden_neurons + 1):
+        for i in range(self.hidden_neurons):
             node_val = 0
             for j in range(len(self.input_nodes)):
                 node_val += self.layer_1_weights[j][i] * self.input_nodes[j]
-            self.layer_1_nodes[i] = activation_func(node_val)
+            self.layer_1_nodes[i+1] = activation_func(node_val)
 
         # Layer 2
         self.layer_2_nodes = [0 for i in range(self.hidden_neurons + 1)]
         self.layer_2_nodes[0] = 1
-        for i in range(1, self.hidden_neurons + 1):
+        for i in range(self.hidden_neurons):
             node_val = 0
-            for j in range(len(self.hidden_neurons + 1)):
+            for j in range(self.hidden_neurons + 1):
                 node_val += self.layer_2_weights[j][i] * self.layer_1_nodes[j]
-            self.layer_2_nodes[i] = activation_func(node_val)
+            self.layer_2_nodes[i+1] = activation_func(node_val)
 
         # Layer 3 (output)
         node_val = 0
-        for j in range(len(self.hidden_neurons + 1)):
-            node_val += self.layer_3_weights[j][i] * self.layer_2_nodes[j]
-        self.output_node = activation_func(node_val)
+        for j in range(self.hidden_neurons + 1):
+            node_val += self.layer_3_weights[j][0] * self.layer_2_nodes[j]
+        self.output_node = node_val
 
-        print(self.output_node)
         # self.layer_1_nodes = [1, .00247, .9975]
         # self.layer_2_nodes = [1, .018, .982]
         # self.output_node = -2.437
@@ -90,5 +89,4 @@ if __name__ == '__main__':
     nn = NeuralNet(None, hidden_neurons=2)
     nn.init_weights()
     nn.forward_propagate()
-    # nn.back_propagate(1)
-
+    nn.back_propagate(1)
