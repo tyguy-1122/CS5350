@@ -1,10 +1,6 @@
 from NeuralNetworks.neural_net import NeuralNet
 from DecisionTree.utilities import extract_data_from_csv
 import numpy as np
-import torch
-from torch.nn import nn
-from torch.optim import Adam
-import copy
 
 def preprocess_data(data):
     numerical_data = []
