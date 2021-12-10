@@ -75,3 +75,35 @@ Parameters:
 - It has a classify_data function which can be used after the training has completed.
     - Parameters:
         - row: the row of data in the same order as the training set
+
+How to use SVM:
+----------------------------------
+- The class SVM implements various forms of SVM. It supports functionality for the primal form, dual form, and dual form with a kernal
+- The __init__ function will automatically trigger the training of the model
+Parameters:
+T, C, a, gamma_start, type='PRIMAL', learning_schedule=1
+    - data: the training data
+    - T: the number of epochs
+    - C: the hyper parameter C
+    - a: the hyper parameter a
+    - gamma_start: the starting value for gamma (updated each epoch)
+    - type: either 'PRIMAL', or 'DUAL'
+    - learning_schedule: the two types of learning schedules requested in the assignment
+- It has a classify_data function which can be used after the training has completed.
+    - Parameters:
+        - row: the row of data in the same order as the training set
+
+How to use NeuralNetworks:
+----------------------------------
+- The class NeuralNet implements a 3-layer neural network. It uses the sigmoid function as the activation function
+- The __init__ function will automatically trigger the training of the model
+Parameters:
+data, T, gamma_start=.1, d=.1, hidden_neurons=None
+    - data: the training data
+    - T: the number of epochs
+    - gamma_start: the starting value for gamma (updated each epoch)
+    - d: hyper parameter d, used to update gamma
+    - hidden_neurons: the number of neurons to use in a hidden layer (default is the same as the number of input features plus a bias node)
+- It has a classify_data function which can be used after the training has completed.
+    - Parameters:
+        - row: the row of data in the same order as the training set

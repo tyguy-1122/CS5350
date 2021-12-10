@@ -37,7 +37,7 @@ class Perceptron:
         weight_vector = [0] * (len(data[0]) - 1)
         a = [0] * (len(data[0]) - 1) 
         self.learning_rate = .01
-        self.classifier_history = [copy.deepcopy(weight_vector)]
+        self.classifier_history = [.deepcopy(weight_vectorcopy)]
 
         for i in range(T):
             random.shuffle(data)
